@@ -38,10 +38,7 @@ int main(int argc, char **argv)
 
 	int N_Depth=3;
 	int N_Power=2;
-	//int N_Thread=4;
 
-	//clock_t start,end;
-	//start=clock();
 	//READ TABLE
 	ifstream TABLE (File_Table);
 
@@ -94,28 +91,19 @@ int main(int argc, char **argv)
 		{
 			if(Gene_Map.count(make_pair(All_Genes[i],All_Genes[j])))
 			{
-				//GeneMatrix[i][j]=1;
+		
 				GeneMatrix[i][j]=Gene_Map[make_pair(All_Genes[i],All_Genes[j])];
-		//		cout<<1;
+		
 			}//exitst
 			else//not exists
 			{
 				GeneMatrix[i][j]=0;
-		//		cout<<0;
+		
 			}//not exists
 		}
-		//cout<<endl;
+		
 	}
-	/*cout<<"Input"<<endl;
-
-	for(int i=0;i<Total_Gene_Count;i++)
-		{
-			for(int j=0;j<Total_Gene_Count;j++)
-			{
-				cout<<GeneMatrix[i][j];
-			}
-			cout<<endl;
-		}*/
+	
 	//Normalization
 	//double Matrix_Normal[Total_Gene_Count][Total_Gene_Count];
 	vector<vector<double> > Matrix_Normal(Total_Gene_Count,vector<double>(Total_Gene_Count,0));
@@ -140,34 +128,17 @@ int main(int argc, char **argv)
 			}
 		}
 	}
-	/*cout<<"Normalization"<<endl;
-
-	for(int i=0;i<Total_Gene_Count;i++)
-		{
-			for(int j=0;j<Total_Gene_Count;j++)
-			{
-				cout<<Matrix_Normal[i][j];
-			}
-			cout<<endl;
-		}*/
-
+	
 	//Iteration
 	//cout<<"HI"<<Total_Gene_Count<<endl;
 	int Itr=0;
-	//double Matrix_Pow[Total_Gene_Count][Total_Gene_Count];
-	//double Matrix_Inf[Total_Gene_Count][Total_Gene_Count];
-	//double Matrix_New[Total_Gene_Count][Total_Gene_Count];
-
+	
 	vector<vector<double> > Matrix_Pow(Total_Gene_Count,vector<double>(Total_Gene_Count,0));
 	vector<vector<double> > Matrix_Inf(Total_Gene_Count,vector<double>(Total_Gene_Count,0));
 	vector<vector<double> > Matrix_New(Total_Gene_Count,vector<double>(Total_Gene_Count,0));
 
-	//cout<<"HI"<<Total_Gene_Count<<endl;
 	while(Itr<1000)
 	{
-		//system ("date");
-		//Pow
-		//cout<<"------"<<Itr<<"-----"<<endl;
 	#pragma omp for  schedule(dynamic)
 		for(int i=0;i<Total_Gene_Count;i++)
 		{
@@ -189,15 +160,6 @@ int main(int argc, char **argv)
 				}
 			}
 		}
-		/*cout<<"-----POW-------"<<endl;
-		for(int i=0;i<Total_Gene_Count;i++)
-		{
-			for(int j=0;j<Total_Gene_Count;j++)
-			{
-				cout<<Matrix_Pow[i][j]<<"|";
-			}
-			cout<<endl;
-		}*/
 		//Inflate
 		#pragma omp for  schedule(dynamic)
 		for(int i=0;i<Total_Gene_Count;i++)
@@ -208,15 +170,6 @@ int main(int argc, char **argv)
 				Matrix_Inf[i][j]=pow(Matrix_Pow[i][j],N_Inflation);
 			}
 		}
-		/*cout<<"-----INF-------"<<endl;
-		for(int i=0;i<Total_Gene_Count;i++)
-		{
-			for(int j=0;j<Total_Gene_Count;j++)
-			{
-				cout<<Matrix_Inf[i][j]<<"|";
-			}
-			cout<<endl;
-		}*/
 		//Nomalization again
 		#pragma omp for  schedule(dynamic)
 		for(int i=0;i<Total_Gene_Count;i++)
@@ -239,15 +192,6 @@ int main(int argc, char **argv)
 				}
 			}
 		}
-		/*cout<<"-----New-------"<<endl;
-		for(int i=0;i<Total_Gene_Count;i++)
-		{
-			for(int j=0;j<Total_Gene_Count;j++)
-			{
-				cout<<Matrix_New[i][j]<<"|";
-			}
-			cout<<endl;
-		}*/
 		//Check Chaos
 		double Count_diff=0;
 		double Cut_diff=0.0001;
@@ -273,21 +217,8 @@ int main(int argc, char **argv)
 		{
 			break;
 		}
-		//cout<<"Count:"<<Count_diff<<"Cut:"<<Cut_diff<<endl;
 		Itr++;
 	}
-	/*cout<<"---------FINAL------"<<endl;
-	cout<<"------Matrix---"<<endl;
-	//Final Matrix
-	for(int i=0;i<Total_Gene_Count;i++)
-	{
-		for(int j=0;j<Total_Gene_Count;j++)
-		{
-			cout<<Matrix_Normal[i][j]<<" ";
-		}
-		cout<<endl;
-	}
-	*/
 	//print Results
 	int Check_Used[Total_Gene_Count];
 	//Check init
@@ -295,8 +226,6 @@ int main(int argc, char **argv)
 	{
 		Check_Used[i]=0;
 	}
-	//system("date");
-	//cout<<"------Cluster---"<<endl;
 	for(int i=0;i<Total_Gene_Count;i++)
 	{
 		int IsCluster=0;
@@ -321,7 +250,5 @@ int main(int argc, char **argv)
 			cout<<endl;
 		}
 	}
-	//end=clock();
-	//cout<<"time : "<<end-start<<endl;
 	return 0;
 }
